@@ -1,0 +1,24 @@
+{
+  "name": "jserrlogger",
+  "version": "1.0.0",
+  "description": "A javascript module that catches javascript errors and posts them back to a server to be logged and managed.",
+  "main": "jserrlogger.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ciprianmiclaus/jserrlogger"
+  },
+  "keywords": [
+    "javascript",
+    "error",
+    "logger"
+  ],
+  "author": "Ciprian Miclaus",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ciprianmiclaus/jserrlogger/issues"
+  },
+  "homepage": "https://github.com/ciprianmiclaus/jserrlogger"
+}
