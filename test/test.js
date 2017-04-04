@@ -21,14 +21,10 @@ describe("jserrlogger negative tests", function () {
 describe("jserrlogger tests", function () {
 
 	var timeout = 1000;
-
-	before(function() {
-		jserrlogger.install("http://someurl.com/endpoint.js", timeout, 1);
-	});
-
-	it("logErr adds a script and removes it after timeout", function(done) {
+	
+	var _doLogErr = function(err_id, done) {
 		jserrlogger.logErr('some error', 'some_file.js', 454);
-		var el = document.getElementById('jserrlog0');
+		var el = document.getElementById('jserrlog' + err_id);
 		assert.isNotNull(el);
 		assert.equal(el.localName, "script");
 		var urlInfo = URI.parse(el.src);
@@ -38,17 +34,29 @@ describe("jserrlogger tests", function () {
 		assert.isNotOk(urlInfo.user);
 		assert.isNotOk(urlInfo.password);
 		var queryInfo = URI.parseQuery(urlInfo.query);
-		assert.equal(queryInfo.i, "0");
+		assert.equal(queryInfo.i, "" + err_id);
 		assert.equal(queryInfo.fl, 'some_file.js');
 		assert.equal(queryInfo.err, 'some error');
 		assert.match(queryInfo.sn, /test\/example\.html$/);
 
-		this.timeout(timeout + 1000);
 		window.setTimeout(function() {
-			var el = document.getElementById('jserrlog0');
+			var el = document.getElementById('jserrlog' + err_id);
 			assert.isNull(el);
 			done();
 		}, timeout);
+	};
+
+	before(function() {
+		jserrlogger.install("http://someurl.com/endpoint.js", timeout, 1);
+		this.timeout(timeout + 1000);
+	});
+
+	it("logErr adds a script and removes it after timeout", function(done) {
+		_doLogErr(0, done);
+	});
+
+	it("subsequent logErrs are processed in a similar fashion", function(done) {
+		_doLogErr(1, done);
 	});
 
 });
