@@ -32,7 +32,9 @@ provide a service over a network, the complete source code of the modified versi
 
 	_consoleLog = function() {
 		if(debugMode && wnd.console && wnd.console.log) {
-			wnd.console.log.apply(0, arguments);
+			try {
+				wnd.console.log.apply(0, arguments);
+			} catch(e){}
 		}
 	};
 

@@ -37,7 +37,7 @@ describe("jserrlogger tests", function () {
 		assert.equal(queryInfo.i, "" + err_id);
 		assert.equal(queryInfo.fl, 'some_file.js');
 		assert.equal(queryInfo.err, 'some error');
-		assert.match(queryInfo.sn, /test\/example\.html$/);
+		assert.match(queryInfo.sn, /test[\\\/]{0,1}example\.html$/);
 
 		window.setTimeout(function() {
 			var el = document.getElementById('jserrlog' + err_id);
