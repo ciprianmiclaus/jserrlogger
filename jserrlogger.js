@@ -16,32 +16,39 @@ provide a service over a network, the complete source code of the modified versi
 (function(wnd) {
 
 	var err_id = 0,
-		timeout = 3000,
-		url = "",
+		timeout,
+		url,
 		debugMode,
 		_addScript,
 		_log,
-		_consoleLog;
+		_consoleLog,
+		_assert;
+
+	_assert = function(cond, errStr) {
+		if(!cond){
+			throw errStr;
+		}
+	};
 
 	_consoleLog = function() {
 		if(debugMode && wnd.console && wnd.console.log) {
 			wnd.console.log.apply(0, arguments);
 		}
-	},
+	};
 
 	_addScript = function(src) {
 		try {
-			var script = document.createElement("script"),
+			var script = wnd.document.createElement("script"),
 				script_id = "jserrlog" + err_id;
-			script.id = script_id
+			script.id = script_id;
 			script.src = src;
 
-			document.getElementsByTagName("head")[0].appendChild(script);
+			wnd.document.getElementsByTagName("head")[0].appendChild(script);
 
 			wnd.setTimeout(function() {
 				try {
-					var script = document.getElementById(script_id);
-					document.getElementsByTagName("head")[0].removeChild(script);
+					var script = wnd.document.getElementById(script_id);
+					wnd.document.getElementsByTagName("head")[0].removeChild(script);
 				}
 				catch (e) {
 					_consoleLog("internal error:", e);
@@ -76,7 +83,8 @@ provide a service over a network, the complete source code of the modified versi
 	wnd.jserrlogger = {
 		
 		install: function(url_, timeout_, debug_) {
-			url = url_||"";
+			_assert(url_, "install needs a url");
+			url = url_;
 			timeout = timeout_||3000;
 			debugMode = debug_;
 
@@ -89,9 +97,12 @@ provide a service over a network, the complete source code of the modified versi
 			};
 		},
 
-		logErr: function(err_msg, file, line_number, col_number) {
-			_log(err_msg, file, line_number, col_number);
+		logErr: function(err_msg, file, line_number) {
+			_assert(url, "jserrlogger not installed");
+			_log(err_msg, file, line_number);
 		}
 	};
+	
+	return wnd.jserrlogger;
 
 })(window);
