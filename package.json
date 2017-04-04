@@ -4,7 +4,14 @@
   "description": "A javascript module that catches javascript errors and posts them back to a server to be logged and managed.",
   "main": "jserrlogger.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "jshint jserrlogger.js",
+	"prepare_build": "mkdirp ./lib",
+    "build": "uglifyjs jserrlogger.js > lib/jserrlogger.min.js",
+    "test": "echo 'tests needed'",
+
+    "prepublish": "npm run build",
+    "prebuild": "npm run test && npm run prepare_build",
+    "pretest": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -20,5 +27,10 @@
   "bugs": {
     "url": "https://github.com/ciprianmiclaus/jserrlogger/issues"
   },
-  "homepage": "https://github.com/ciprianmiclaus/jserrlogger"
+  "homepage": "https://github.com/ciprianmiclaus/jserrlogger",
+  "devDependencies": {
+    "jshint": "^2.9.4",
+    "mkdirp": "^0.5.1",
+    "uglify-js": "^2.8.21"
+  }
 }
