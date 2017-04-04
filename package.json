@@ -4,10 +4,10 @@
   "description": "A javascript module that catches javascript errors and posts them back to a server to be logged and managed.",
   "main": "jserrlogger.js",
   "scripts": {
-    "lint": "jshint jserrlogger.js",
+    "lint": "jshint jserrlogger.js test/test.js",
     "prepare_build": "mkdirp ./lib",
     "build": "uglifyjs jserrlogger.js > lib/jserrlogger.min.js",
-    "test": "echo 'tests needed'",
+    "test": "mocha-phantomjs test/example.html",
     "prepublish": "npm run build",
     "prebuild": "npm run test && npm run prepare_build",
     "pretest": "npm run lint"
@@ -28,8 +28,13 @@
   },
   "homepage": "https://github.com/ciprianmiclaus/jserrlogger",
   "devDependencies": {
+    "chai": "^3.5.0",
     "jshint": "^2.9.4",
     "mkdirp": "^0.5.1",
-    "uglify-js": "^2.8.21"
+    "mocha": "^3.2.0",
+    "mocha-phantomjs": "^4.1.0",
+    "uglify-js": "^2.8.21",
+    "uri-js": "^3.0.2",
+    "urijs": "^1.18.10"
   }
 }
