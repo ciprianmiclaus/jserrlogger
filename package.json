@@ -5,6 +5,7 @@
   "main": "jserrlogger.js",
   "scripts": {
     "lint": "jshint jserrlogger.js test/test.js",
+	"clean": "rimraf ./lib",
     "prepare_build": "mkdirp ./lib",
     "build": "uglifyjs jserrlogger.js > lib/jserrlogger.min.js",
     "test": "mocha-phantomjs test/example.html",
@@ -33,8 +34,8 @@
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "mocha-phantomjs": "^4.1.0",
+    "rimraf": "^2.6.1",
     "uglify-js": "^2.8.21",
-    "uri-js": "^3.0.2",
     "urijs": "^1.18.10"
   }
 }
