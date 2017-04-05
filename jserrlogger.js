@@ -15,10 +15,12 @@ provide a service over a network, the complete source code of the modified versi
 
 (function(wnd) {
 
-	var err_id = 0,
+	var errId = 1,
 		timeout,
 		url,
 		debugMode,
+		upperLimit,
+		prevOnError,
 		_addScript,
 		_log,
 		_consoleLog,
@@ -41,7 +43,7 @@ provide a service over a network, the complete source code of the modified versi
 	_addScript = function(src) {
 		try {
 			var script = wnd.document.createElement("script"),
-				script_id = "jserrlog" + err_id;
+				script_id = "jserrlog" + errId;
 			script.id = script_id;
 			script.src = src;
 
@@ -66,7 +68,7 @@ provide a service over a network, the complete source code of the modified versi
 		_consoleLog("_log:", err_msg, file, line_number);
 
 		// format the data for the request
-		var src = url + "?i=" + err_id;
+		var src = url + "?i=" + errId;
 		src += "&sn=" + escape(document.URL);
 		src += "&fl=" + escape(file);
 		src += "&ln=" + line_number;
@@ -79,18 +81,19 @@ provide a service over a network, the complete source code of the modified versi
 		src += m;
 		
 		_addScript(src);
-		err_id++;
+		return errId++;
 	};
 
 	wnd.jserrlogger = {
 		
-		install: function(url_, timeout_, debug_) {
+		install: function(url_, options) {
 			_assert(url_, "install needs a url");
 			url = url_;
-			timeout = timeout_||3000;
-			debugMode = debug_;
+			timeout = options.timeout||3000;
+			upperLimit = options.upperLimit;
+			debugMode = options.debug;
 
-			var prevOnError = wnd.onerror;
+			prevOnError = wnd.onerror;
 			wnd.onerror = function(err_msg, file, line_number) {
 				_log(err_msg, file, line_number);
 				if(prevOnError) {
@@ -99,9 +102,17 @@ provide a service over a network, the complete source code of the modified versi
 			};
 		},
 
+		uninstall: function() {
+			_assert(url, "jserrlogger not installed");
+			wnd.onerror = prevOnError;
+			url = null;
+			errId = 1;
+		},
+
 		logErr: function(err_msg, file, line_number) {
 			_assert(url, "jserrlogger not installed");
-			_log(err_msg, file, line_number);
+			if(upperLimit && errId > upperLimit) { return; }
+			return _log(err_msg, file, line_number);
 		}
 	};
 	
