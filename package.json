@@ -1,6 +1,6 @@
 {
   "name": "jserrlogger",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A javascript module that catches javascript errors and posts them back to a server to be logged and managed.",
   "main": "jserrlogger.js",
   "scripts": {
