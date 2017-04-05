@@ -89,6 +89,7 @@ provide a service over a network, the complete source code of the modified versi
 		install: function(url_, options) {
 			_assert(url_, "install needs a url");
 			url = url_;
+			options = options||{};
 			timeout = options.timeout||3000;
 			upperLimit = options.upperLimit;
 			debugMode = options.debug;

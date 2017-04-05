@@ -116,6 +116,11 @@ describe("jserrlogger tests where logErr is called directly", function () {
 		}, 500);
 	};
 
+	it("jserrlogger can be installed without options", function() {
+		jserrlogger.install("http://someurl.com/err.js");
+		jserrlogger.uninstall();
+	});
+
 	it("logErr adds a script and removes it after timeout", function(done) {
 		_doInstall();
 		_doLogErr(done);
