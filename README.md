@@ -19,6 +19,25 @@
 </script>
 ```
 
+### Install the handler with options
+
+```html
+<script>
+	var options = {
+		upperLimit: 5,
+		debug: 1,
+		timeout: 3000
+	};
+    jserrlogger.install("http://www.your-url.com/err_js_endpoint");
+</script>
+```
+
+Options available to specify:
+* upperLimit - when set, only report the first upperLimit errors in one browser session, ignore any errors after that
+* debug - when enabled, log to console any errors
+* timeout - timeout after which the jsonp script is removed from the DOM (in ms)
+
+
 ### Implement the server side endpoint
 
 jserrlogger will send GET requests like these:
