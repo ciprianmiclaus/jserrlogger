@@ -23,12 +23,12 @@
 
 ```html
 <script>
-	var options = {
-		upperLimit: 5,
-		debug: 1,
-		timeout: 3000
-	};
-    jserrlogger.install("http://www.your-url.com/err_js_endpoint");
+    var options = {
+        upperLimit: 5,
+        debug: 1,
+        timeout: 3000
+    };
+    jserrlogger.install("http://www.your-url.com/err_js_endpoint", options);
 </script>
 ```
 
