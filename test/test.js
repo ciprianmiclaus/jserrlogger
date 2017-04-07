@@ -45,7 +45,7 @@ describe("jserrlogger tests where logErr is called from window.onerror", functio
 	it("jserrlogger intercepts and reprots errors via window.onerror", function(done) {
 		var prevErr = window.onerror;
 		window.onerror = null;
-		jserrlogger.install("http://someurl.com/endpoint.js", {timeout:500, debug:1});
+		jserrlogger.install("http://localhost/endpoint.js", {timeout:500, debug:1});
 		try {
 			window.onerror('some error', 'some_file.js', 454);
 		} catch(e) {}
@@ -60,7 +60,7 @@ describe("jserrlogger tests where logErr is called from window.onerror", functio
 		assert.equal(el.localName, "script");
 		var urlInfo = URI.parse(el.src);
 		assert.equal(urlInfo.protocol, 'http');
-		assert.equal(urlInfo.hostname, 'someurl.com');
+		assert.equal(urlInfo.hostname, 'localhost');
 		assert.equal(urlInfo.path, '/endpoint.js');
 		assert.isNotOk(urlInfo.user);
 		assert.isNotOk(urlInfo.password);
@@ -85,7 +85,7 @@ describe("jserrlogger tests where logErr is called directly", function () {
 			timeout: 500,
 			debug: 1
 		};
-		jserrlogger.install("http://someurl.com/endpoint.js", options);
+		jserrlogger.install("http://localhost/endpoint.js", options);
 	};
 	
 	var _assertNoScript = function(err_id) {
@@ -100,7 +100,7 @@ describe("jserrlogger tests where logErr is called directly", function () {
 		assert.equal(el.localName, "script");
 		var urlInfo = URI.parse(el.src);
 		assert.equal(urlInfo.protocol, 'http');
-		assert.equal(urlInfo.hostname, 'someurl.com');
+		assert.equal(urlInfo.hostname, 'localhost');
 		assert.equal(urlInfo.path, '/endpoint.js');
 		assert.isNotOk(urlInfo.user);
 		assert.isNotOk(urlInfo.password);
@@ -117,7 +117,7 @@ describe("jserrlogger tests where logErr is called directly", function () {
 	};
 
 	it("jserrlogger can be installed without options", function() {
-		jserrlogger.install("http://someurl.com/err.js");
+		jserrlogger.install("http://localhost/err.js");
 		jserrlogger.uninstall();
 	});
 
