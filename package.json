@@ -1,12 +1,12 @@
 {
   "name": "jserrlogger",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A javascript module that catches javascript errors and posts them back to a server to be logged and managed.",
   "main": "jserrlogger.js",
   "scripts": {
     "lint": "jshint jserrlogger.js test/test.js",
 	"clean": "rimraf ./lib",
-    "prepare_build": "mkdirp ./lib",
+    "prepare_build": "npm run clean && mkdirp ./lib",
     "build": "uglifyjs jserrlogger.js > lib/jserrlogger.min.js",
     "test": "mocha-phantomjs test/example.html",
     "prepublish": "npm run build",

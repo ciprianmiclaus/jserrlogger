@@ -1,5 +1,5 @@
 /*
-jserrlogger.js v1.0.0
+jserrlogger.js v1.0.3
 
 Installs an onerror handler to catch javascript errors and logs them on a server
 via a JSONP call to an endpoint on a server to allow the server to log these errors.
@@ -22,37 +22,34 @@ provide a service over a network, the complete source code of the modified versi
 		upperLimit,
 		prevOnError,
 		_addScript,
-		_log,
 		_consoleLog,
 		_assert;
 
 	_assert = function(cond, errStr) {
-		if(!cond){
-			throw errStr;
-		}
+		if(!cond)throw errStr;
 	};
 
 	_consoleLog = function() {
-		if(debugMode && wnd.console && wnd.console.log) {
+		if(debugMode) {
 			try {
-				wnd.console.log.apply(0, arguments);
+				console.log.apply(0, arguments);
 			} catch(e){}
 		}
 	};
 
 	_addScript = function(src) {
 		try {
-			var script = wnd.document.createElement("script"),
+			var script = document.createElement("script"),
 				script_id = "jserrlog" + errId;
 			script.id = script_id;
 			script.src = src;
 
-			wnd.document.getElementsByTagName("head")[0].appendChild(script);
+			document.getElementsByTagName("head")[0].appendChild(script);
 
-			wnd.setTimeout(function() {
+			setTimeout(function() {
 				try {
-					var script = wnd.document.getElementById(script_id);
-					wnd.document.getElementsByTagName("head")[0].removeChild(script);
+					var script = document.getElementById(script_id);
+					document.getElementsByTagName("head")[0].removeChild(script);
 				}
 				catch (e) {
 					_consoleLog("internal error:", e);
@@ -62,26 +59,6 @@ provide a service over a network, the complete source code of the modified versi
 		catch (e) {
 			_consoleLog("internal error:", e);
 		}
-	};
-
-	_log = function(err_msg, file, line_number) {
-		_consoleLog("_log:", err_msg, file, line_number);
-
-		// format the data for the request
-		var src = url + "?i=" + errId;
-		src += "&sn=" + escape(document.URL);
-		src += "&fl=" + escape(file);
-		src += "&ln=" + line_number;
-		src += "&err=";
-		var m = escape(err_msg);
-		try {
-			m = m.substr(0, 2083 - src.length);
-		}
-		catch(e){}
-		src += m;
-		
-		_addScript(src);
-		return errId++;
 	};
 
 	wnd.jserrlogger = {
@@ -95,8 +72,9 @@ provide a service over a network, the complete source code of the modified versi
 			debugMode = options.debug;
 
 			prevOnError = wnd.onerror;
+			var that = this;
 			wnd.onerror = function(err_msg, file, line_number) {
-				_log(err_msg, file, line_number);
+				that.logErr(err_msg, file, line_number);
 				if(prevOnError) {
 					prevOnError(err_msg, file, line_number);
 				}
@@ -113,7 +91,23 @@ provide a service over a network, the complete source code of the modified versi
 		logErr: function(err_msg, file, line_number) {
 			_assert(url, "jserrlogger not installed");
 			if(upperLimit && errId > upperLimit) { return; }
-			return _log(err_msg, file, line_number);
+			_consoleLog("_log:", err_msg, file, line_number);
+
+			// format the data for the request
+			var src = url + "?i=" + errId;
+			src += "&sn=" + escape(document.URL);
+			src += "&fl=" + escape(file);
+			src += "&ln=" + line_number;
+			src += "&err=";
+			var m = escape(err_msg);
+			try {
+				m = m.substr(0, 2083 - src.length);
+			}
+			catch(e){}
+			src += m;
+
+			_addScript(src);
+			return errId++;
 		}
 	};
 	
