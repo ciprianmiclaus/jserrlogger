@@ -67,3 +67,30 @@ jserrlogger.js will then submit a JSONP request to your configured URL endpoint 
 * err - the actual message of the exception raised
 
 jserrlogger.js will also call any previously installed window.onerror callback.
+
+
+## Building and testing
+
+```sh
+#Clone the repo
+git clone https://github.com/ciprianmiclaus/jserrlogger.git
+
+#Change dir into it
+cd jserrlogger
+
+#Install the dependencies
+npm install
+
+#Build (will run tests too)
+npm run build
+
+#Test
+npm test
+```
+
+Your minified build will be in the /lib directory.
+
+
+## Contributing
+
+By all means! Raise issues and send pull requests as per usual github workflow.
